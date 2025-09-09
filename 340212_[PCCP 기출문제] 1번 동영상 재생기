@@ -1,0 +1,37 @@
+def solution(video_len, pos, op_start, op_end, commands):
+    answer = ''
+    video_len_min, video_len_sec = map(int, video_len.split(":"))
+    pos_min, pos_sec = map(int, pos.split(":"))
+    op_start_min, op_start_sec = map(int, op_start.split(":"))
+    op_end_min, op_end_sec = map(int, op_end.split(":"))
+    
+    def T(x, y):
+        return x * 60 + y
+    
+    for command in commands:
+        if T(op_start_min, op_start_sec) <= T(pos_min, pos_sec) <= T(op_end_min, op_end_sec):
+            pos_min = op_end_min
+            pos_sec = op_end_sec
+        if command == "prev":
+            if T(pos_min, pos_sec) < 10:
+                pos_sec = 0
+            else:
+                total = T(pos_min, pos_sec) - 10
+                pos_min = total // 60
+                pos_sec = total % 60
+        if command == "next":
+            if T(pos_min, pos_sec) > T(video_len_min, video_len_sec) - 10:
+                pos_min = video_len_min
+                pos_sec = video_len_sec
+            else:
+                total = T(pos_min, pos_sec) + 10
+                pos_min = total // 60
+                pos_sec = total % 60
+    
+    if T(op_start_min, op_start_sec) <= T(pos_min, pos_sec) <= T(op_end_min, op_end_sec):
+            pos_min = op_end_min
+            pos_sec = op_end_sec
+    
+    answer = f"{pos_min:02d}:{pos_sec:02d}"
+    
+    return answer
