@@ -1,0 +1,13 @@
+def solution(n, lost, reserve):
+    lost_set = set(lost) - set(reserve)
+    reserved_set = set(reserve) - set(lost)
+    
+    for i in sorted(lost_set):
+        if (i - 1) in reserved_set:
+            lost_set.remove(i)
+            reserved_set.remove(i - 1)
+        elif (i + 1) in reserved_set:
+            lost_set.remove(i)
+            reserved_set.remove(i + 1)
+    
+    return n - len(lost_set)
