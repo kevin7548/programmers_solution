@@ -1,0 +1,28 @@
+import numpy as np
+
+def solution(mats, park):
+    answer = []
+    mats.sort(reverse = True)
+    m = len(park)
+    n = len(park[0])
+    
+    for i in range(m):
+        for j in range(n):
+            if park[i][j] == '-1':
+                park[i][j] = -1
+            else:
+                park[i][j] = 0
+    
+    array = np.array(park, dtype = int)
+    
+    for mat in mats:
+        for i in range(m - int(mat) + 1):
+            for j in range(n - int(mat) + 1):
+                if np.prod(array[i:i+int(mat),j:j+int(mat)]) != 0:
+                    answer.append(int(mat))
+    
+    return -1 if len(answer) == 0 else max(answer) 
+
+    ## 개선방안
+    # all 함수 사용해보기
+    # set() 활용해서 -1 만 존재하는 경우
