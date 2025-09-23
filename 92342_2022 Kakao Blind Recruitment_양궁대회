@@ -1,0 +1,43 @@
+def solution(n, info):
+    answer = [-1]
+    max_diff = 0
+    
+    def dfs(idx, arrows, ryan):  ## arrows는 남은 화살 수, ryan은 지금까지의 화살 수(list)
+        nonlocal answer, max_diff
+        if idx == 11:
+            temp = ryan[:]
+            if arrows > 0:  # 화살이 남았을 때의 처리
+                temp[10] += arrows
+            
+            r_score, a_score = 0, 0
+            for i in range(11):
+                if info[i] >= temp[i] and info[i]>0:
+                    a_score += 10 - i
+                elif temp[i] > info[i]:
+                    r_score += 10 - i
+            
+            if r_score > a_score:   # diff로 먼저 점수 차이 정의
+                diff = r_score - a_score
+                if diff > max_diff:
+                    max_diff = diff
+                    answer = temp[:]
+                elif diff == max_diff:
+                    if temp[::-1] > answer[::-1]:   # list 간 크기 비교
+                            answer = temp[:]
+            return
+            
+        
+        ## 이 점수 쏘는 경우
+        s = info[idx] + 1
+        if arrows >= s:   # arrows가 무조건 많이 남아있어야
+            ryan[idx] = s
+            dfs(idx + 1, arrows - s, ryan)
+            ryan[idx] = 0
+        
+        ## 이 점수 쏘지 않는경우
+        dfs(idx + 1, arrows, ryan)
+    
+    dfs(0, n, [0]*11)
+    return answer
+
+## itertools로 중복 조합 ##
