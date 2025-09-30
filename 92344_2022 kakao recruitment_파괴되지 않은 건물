@@ -1,0 +1,33 @@
+def solution(board, skill):
+    answer = 0
+    n, m = len(board), len(board[0])
+    
+    # 2차원 테이블
+    d = [[0] * (m+1) for i in range(n+1)]
+    
+    # 내구도 변화
+    for case in skill:
+        type_, r1, c1, r2, c2, degree = case
+        val = -degree if type_ == 1 else degree
+        d[r1][c1] += val
+        d[r1][c2+1] += - val
+        d[r2+1][c1] += - val
+        d[r2+1][c2+1] += val
+    
+    # 가로 누적합
+    for i in range(n+1):
+        for j in range(m):
+            d[i][j+1] += d[i][j]
+    
+    # 세로 누적합
+    for j in range(m+1):
+        for i in range(n):
+            d[i+1][j] += d[i][j]
+    
+    # 파괴되지 않은 건물 카운팅
+    for i in range(n):
+        for j in range(m):
+            if board[i][j] + d[i][j] >= 1:
+                answer += 1
+    
+    return answer
