@@ -1,0 +1,19 @@
+def solution(sequence): # 시간 복잡도 O(N)!
+    n = len(sequence)
+    pos_seq = [k*((-1)**i) for i, k in enumerate(sequence)] # 1로 시작
+    neg_seq = [-k*((-1)**i) for i, k in enumerate(sequence)] # -1로 시작
+    
+    # Kadane's algorithm 연속 부분합 최대값
+    pos_max_sum = pos_seq[0] # 전체 최대값
+    pos_current = pos_seq[0] # 현재까지 연속 부분합
+    for i in range(1, n):
+        pos_current = max(pos_seq[i], pos_current + pos_seq[i])
+        pos_max_sum = max(pos_max_sum, pos_current)
+    
+    neg_max_sum = neg_seq[0] # 전체 최대값
+    neg_current = neg_seq[0] # 현재까지 연속 부분합
+    for i in range(1, n):
+        neg_current = max(neg_seq[i], neg_current + neg_seq[i])
+        neg_max_sum = max(neg_max_sum, neg_current)
+        
+    return max(pos_max_sum, neg_max_sum)
