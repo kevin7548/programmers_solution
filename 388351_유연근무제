@@ -1,0 +1,26 @@
+# 분 60 넘어가면 시간
+# 요일 7 넘어가면 나머지로
+
+def solution(schedules, timelogs, startday):
+    answer = 0
+    n = len(schedules) # 직원 수
+    weekends = [] # 주말인 인덱스
+    for i in range(7):
+        if (startday + i)%7 == 6 or (startday + i)%7 == 0:
+            weekends.append(i) 
+    
+    # 직원별 정시 출근한 날 수 카운팅
+    for i in range(n):
+        limit_time = schedules[i] + 10
+        if limit_time % 100 >= 60:
+            limit_time += 40
+        clock = 0 # 개인별 정시 출근 횟수
+        for j in range(7):
+            if j in weekends:
+                pass
+            else:
+                if limit_time >= timelogs[i][j]:
+                    clock += 1
+        answer += 1 if clock == 5 else 0
+    
+    return answer
