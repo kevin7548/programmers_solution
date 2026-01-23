@@ -1,0 +1,12 @@
+def solution(name, yearning, photo):
+    answer = []
+    dictionary = dict(zip(name, yearning))
+
+    for i in range(len(photo)):
+        sum = 0
+        for j in photo[i]:
+            if j in dictionary:
+                sum += dictionary[j]
+        answer.append(sum)
+    
+    return answer
